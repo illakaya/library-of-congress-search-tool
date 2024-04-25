@@ -31,7 +31,15 @@ const getSearchResults = (searchTerm, format) => {
                 displayResults(data.results);
             });
         } else {
-            resultsDisplayEl.innerHTML = '<h3>No results found</h3>';
+            const cardEl = document.createElement('div'),
+                divEl = document.createElement('div'),
+                hEl = document.createElement('h3');
+            cardEl.classList = 'card m-3';
+            divEl.classList = 'card-body';
+            hEl.textContent = 'No results found';
+            divEl.append(hEl);
+            cardEl.append(divEl);
+            resultsDisplayEl.append(cardEl);
         }
     });
 };
@@ -44,16 +52,28 @@ const displayResults = (results) => {
     searchVal.value = searchInquiry[0];
     formatVal.value = searchInquiry[1];
     if (results.length === 0) {
-        resultsDisplayEl.innerHTML = '<h3>No results found</h3>';
+        const cardEl = document.createElement('div'),
+            divEl = document.createElement('div'),
+            hEl = document.createElement('h3');
+        cardEl.classList = 'card m-3';
+        divEl.classList = 'card-body';
+        hEl.textContent = 'No results found';
+        divEl.append(hEl);
+        cardEl.append(divEl);
+        resultsDisplayEl.append(cardEl);
     }
     for (const result of results) {
-        const hEl = document.createElement('h3'),
+        const cardEl = document.createElement('div'),
+            divEl = document.createElement('div'),
+            hEl = document.createElement('h3'),
             datePEl = document.createElement('p'),
             subjectPEl = document.createElement('p'),
             descriptionPEl = document.createElement('p'),
-            buttonEl = document.createElement('button'),
-            divEl = document.createElement('div');
+            buttonEl = document.createElement('button');
+        cardEl.classList = 'card m-3';
+        divEl.classList = 'card-body';
         hEl.textContent = result.title;
+        hEl.classList = 'card-title';
         if (result.date) {
             datePEl.innerHTML = `<strong>Date: </strong>${result.date.slice(0, 4)}`;
         } else {
@@ -70,10 +90,11 @@ const displayResults = (results) => {
             descriptionPEl.innerHTML = '<strong>Description: </strong>No description for this entry';
         }
         buttonEl.innerHTML = 'Read More';
-        buttonEl.classList.add('read-more');
+        buttonEl.classList = 'btn btn-dark';
         buttonEl.setAttribute('link', result.id);
         divEl.append(hEl, datePEl, subjectPEl, descriptionPEl, buttonEl);
-        resultsDisplayEl.append(divEl);
+        cardEl.append(divEl);
+        resultsDisplayEl.append(cardEl);
     }
 };
 
@@ -92,7 +113,7 @@ backBtn.addEventListener('click', function (event) {
 });
 
 resultsDisplayEl.addEventListener('click', function (event) {
-    if (event.target.classList.contains('read-more')) {
+    if (event.target.classList.contains('btn')) {
         window.open(event.target.getAttribute('link'), 'blank');
     }
 });

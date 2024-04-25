@@ -1,0 +1,32 @@
+:root {
+    --bg: #003049;
+    --light: #d9e8e8;
+}
+
+body.search,
+html.search {
+    height: 100%;
+    margin: 0;
+    display: grid;
+    place-items: center;
+}
+
+body {
+    background-color: var(--bg);
+}
+
+.light,
+.card {
+    background-color: var(--light);
+}
+
+h2 {
+    color: var(--light);
+}
+
+h1,
+h2,
+h3 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bolder;
+}
