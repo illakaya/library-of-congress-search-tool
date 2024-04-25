@@ -10,13 +10,13 @@ let searchInquiry = JSON.parse(localStorage.getItem('searchInquiry'));
 // Create a list of items that required a different url format
 const resultsDisplayEl = document.getElementById('results'),
     tabEl = document.querySelector('title'),
+    backBtn = document.getElementById('back'),
     formTwo = document.getElementById('form-two'),
     searchVal = document.getElementById('search'),
     formatVal = document.getElementById('dropdown');
 
 const getSearchResults = (searchTerm, format) => {
     let query = searchTerm.split(' ').join('+');
-    console.log(query);
     let apiUrl = 'https://www.loc.gov/';
     if (format === 'search') {
         apiUrl += `search/?in&q=${query}&new=true&st=&fo=json`;
@@ -25,15 +25,13 @@ const getSearchResults = (searchTerm, format) => {
     } else {
         apiUrl += `${format}/?q=${query}&fo=json`;
     }
-    console.log(apiUrl);
     fetch(apiUrl).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                console.log(data.results);
                 displayResults(data.results);
             });
         } else {
-            alert(`Error: ${response.statusText}`);
+            resultsDisplayEl.innerHTML = '<h3>No results found</h3>';
         }
     });
 };
@@ -46,7 +44,7 @@ const displayResults = (results) => {
     searchVal.value = searchInquiry[0];
     formatVal.value = searchInquiry[1];
     if (results.length === 0) {
-        resultsDisplayEl.innerHTML = '<h3>No results found</h3>'
+        resultsDisplayEl.innerHTML = '<h3>No results found</h3>';
     }
     for (const result of results) {
         const hEl = document.createElement('h3'),
@@ -72,6 +70,7 @@ const displayResults = (results) => {
             descriptionPEl.innerHTML = '<strong>Description: </strong>No description for this entry';
         }
         buttonEl.innerHTML = 'Read More';
+        buttonEl.classList.add('read-more');
         buttonEl.setAttribute('link', result.id);
         divEl.append(hEl, datePEl, subjectPEl, descriptionPEl, buttonEl);
         resultsDisplayEl.append(divEl);
@@ -85,4 +84,15 @@ formTwo.addEventListener('submit', function (event) {
     let searchInquiry = [searchVal.value, formatVal.value];
     localStorage.setItem('searchInquiry', JSON.stringify(searchInquiry));
     window.location.assign('results.html');
+});
+
+backBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    window.location.assign('search.html');
+});
+
+resultsDisplayEl.addEventListener('click', function (event) {
+    if (event.target.classList.contains('read-more')) {
+        window.open(event.target.getAttribute('link'), 'blank');
+    }
 });
