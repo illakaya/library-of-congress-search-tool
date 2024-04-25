@@ -109,7 +109,7 @@ formTwo.addEventListener('submit', function (event) {
 
 backBtn.addEventListener('click', function (event) {
     event.preventDefault();
-    window.location.assign('search.html');
+    window.location.assign('index.html');
 });
 
 resultsDisplayEl.addEventListener('click', function (event) {
